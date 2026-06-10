@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Custom Search Test</title>
+</head>
+<body>
+  <h1>Google Custom Search</h1>
+  <input type="text" id="query" placeholder="Enter search term" />
+  <button onclick="search()">Search</button>
+  <ul id="results"></ul>
+
+  <script>
+    const apiKey = 'AIzaSyBf4cKdLMIlxHnBPUgjy3EmFrlkEshaHP0'; // Replace with your API key
+    const searchEngineId = '971e2b51a3b8546ae'; // Replace with your Search Engine ID
+
+    function search() {
+      const query = document.getElementById('query').value;
+      const url = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${searchEngineId}&q=${encodeURIComponent(query)}`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const results = document.getElementById('results');
+          results.innerHTML = '';
+          if (data.items) {
+            data.items.forEach(item => {
+              const li = document.createElement('li');
+              li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+              results.appendChild(li);
+            });
+          } else {
+            results.innerHTML = 'No results found.';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
+  </script>
+</body>
+</html>
